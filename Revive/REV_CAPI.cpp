@@ -73,6 +73,13 @@ OVR_PUBLIC_FUNCTION(ovrResult) ovr_Initialize(const ovrInitParams* params)
 	MH_ApplyQueued();
 
 	vr::VR_Init(&g_InitError, vr::VRApplication_Scene);
+    // Added to make remote support a little easier
+    if (g_InitError)
+    {
+        char sMsg[1024];
+        sprintf_s(sMsg, "VR_Init failed.\nError %d: \"%s\"", g_InitError, VR_GetVRInitErrorAsEnglishDescription(g_InitError));
+        MessageBoxA(GetDesktopWindow(), sMsg, "NOLF2Revive", MB_OK);
+    }
 
 	MH_QueueEnableHook(LoadLibraryW);
 	MH_QueueEnableHook(OpenEventW);
